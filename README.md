@@ -80,3 +80,6 @@ If you do end up adding this action in a non-PR context then it is designed to j
 
 **Required** Used to identify the test that has failed. Make sure that you are specific enough, which means that you probably should pass a matrix variable to this ID
 
+### `bot-user`
+
+**Optional** This is only used if you have a custom bot user whos name is different from the default `github-actions[bot]`. This is an advanced feature and should be ignored by most users
