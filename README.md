@@ -16,9 +16,8 @@ Considering you have the following `.github/workflow` file:
 name: CI
 
 on:
-  push:
-    branches:
-      - main
+  # NOTE: continue-on-error-comment only makes sense to run on a Pull Request
+  # see below for more information
   pull_request: {}
 
 jobs:
@@ -59,6 +58,12 @@ and then you add a step after that one that uses this action making sure that yo
 ```
 
 Test-id is used to identify which test failed, so make sure that you pass the relevant `matrix` variables so that you can identify it later.
+
+### Pull Request Context
+
+`continue-on-error-comment` is designed to be used in the context of a Pull Request. It doesn't make much sense to run this on a commit on a branch.
+
+If you do end up adding this action in a non-PR context then it is designed to just do nothing and continue without error. If you find that isn't true please open a bug report with reproduction instructions and we will fix the problem.
 
 ## Inputs
 
