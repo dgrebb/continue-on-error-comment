@@ -9593,6 +9593,7 @@ if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_requ
     const myToken = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('repo-token', { required: true });
     const outcome = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('outcome', { required: true });
     const testId = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('test-id', { required: true });
+    const botUser = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('bot-user', { required: true });
 
     if (outcome === 'failure') {
       const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(myToken);
@@ -9604,7 +9605,7 @@ if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_requ
         issue_number: pullRequest.number,
       });
 
-      const existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o) && comment.body.includes(`sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}`));
+      const existingComment = comments.find((comment) => comment.user.login === botUser && comment.body.endsWith(_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o) && comment.body.includes(`sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}`));
     
       if (existingComment) {
 
