@@ -9586,53 +9586,57 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 
 
 
-try {
-  const myToken = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('repo-token', { required: true });
-  const outcome = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('outcome', { required: true });
-  const testId = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('test-id', { required: true });
+if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_request') {
+  console.log(`continue-on-error-comment is designed to be used with pull request and does not work with a [${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName}] event. We are ignoring this event.`);
+} else {
+  try {
+    const myToken = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('repo-token', { required: true });
+    const outcome = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('outcome', { required: true });
+    const testId = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('test-id', { required: true });
 
-  if (outcome === 'failure') {
-    const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(myToken);
-    const pullRequest = await (0,_lib_get_pull_request_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z)(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, octokit);
-  
-    const { data: comments } = await octokit.rest.issues.listComments({
-      owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
-      repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
-      issue_number: pullRequest.number,
-    });
-
-    const existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o) && comment.body.includes(`sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}`));
-  
-    if (existingComment) {
-
-      let body = existingComment.body.split('\n');
-
-      body.splice(body.length - 3, 0, `- ${testId}`);
-
-      await octokit.rest.issues.updateComment({
-        owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
-        repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
-        comment_id: existingComment.id,
-        body: body.join('\n'),
-      });
-    } else {
-      const body = `Some tests with 'continue-on-error: true' have failed: 
-  
-- ${testId}
-
-sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}
-${_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o}`;
-      await octokit.rest.issues.createComment({
+    if (outcome === 'failure') {
+      const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(myToken);
+      const pullRequest = await (0,_lib_get_pull_request_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z)(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, octokit);
+    
+      const { data: comments } = await octokit.rest.issues.listComments({
         owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
         repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
         issue_number: pullRequest.number,
-        body,
       });
-    }
-  }
 
-} catch (error) {
-  (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
+      const existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o) && comment.body.includes(`sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}`));
+    
+      if (existingComment) {
+
+        let body = existingComment.body.split('\n');
+
+        body.splice(body.length - 3, 0, `- ${testId}`);
+
+        await octokit.rest.issues.updateComment({
+          owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
+          repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
+          comment_id: existingComment.id,
+          body: body.join('\n'),
+        });
+      } else {
+        const body = `Some tests with 'continue-on-error: true' have failed: 
+    
+  - ${testId}
+
+  sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}
+  ${_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o}`;
+        await octokit.rest.issues.createComment({
+          owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
+          repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
+          issue_number: pullRequest.number,
+          body,
+        });
+      }
+    }
+
+  } catch (error) {
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
+  }
 }
 __webpack_handle_async_dependencies__();
 }, 1);
