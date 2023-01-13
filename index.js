@@ -42,7 +42,7 @@ if(context.eventName !== 'pull_request') {
     
   - ${testId}
 
-  sha: ${context.sha}
+  <!-- sha: ${context.sha} -->
   ${signiture}`;
         await octokit.rest.issues.createComment({
           owner: context.repo.owner,
