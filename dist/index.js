@@ -9623,7 +9623,7 @@ if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_requ
     
   - ${testId}
 
-  sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}
+  <!-- sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha} -->
   ${_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o}`;
         await octokit.rest.issues.createComment({
           owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
