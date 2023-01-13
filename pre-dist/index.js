@@ -9647,7 +9647,7 @@ try {
   
 } catch (error) {
   // we want to ignore any failure at this stage but we will log it in case we need to debug something
-  console.log(error.message);
+  console.log(`Error during pre-run step: [${error.message}]`);
 }
 __webpack_handle_async_dependencies__();
 }, 1);
