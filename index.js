@@ -12,6 +12,7 @@ if(context.eventName !== 'pull_request') {
     const myToken = getInput('repo-token', { required: true });
     const outcome = getInput('outcome', { required: true });
     const testId = getInput('test-id', { required: true });
+    const botUser = getInput('bot-user', { required: true });
 
     if (outcome === 'failure') {
       const octokit = getOctokit(myToken);
@@ -23,7 +24,7 @@ if(context.eventName !== 'pull_request') {
         issue_number: pullRequest.number,
       });
 
-      const existingComment = comments.find((comment) => comment.user.login === 'github-actions[bot]' && comment.body.endsWith(signiture) && comment.body.includes(`sha: ${context.sha}`));
+      const existingComment = comments.find((comment) => comment.user.login === botUser && comment.body.endsWith(signiture) && comment.body.includes(`sha: ${context.sha}`));
     
       if (existingComment) {
 

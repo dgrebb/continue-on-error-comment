@@ -7,6 +7,10 @@ inputs:
     description: 'Identifier of the test'
   outcome:
     description: 'The outcome of the job'
+  bot-user:
+    description: 'The username for the bot that posts the comment'
+    required: false
+    default: 'github-actions[bot]'
 runs:
   using: 'node16'
   main: 'dist/index.js'
