@@ -65,6 +65,15 @@ Test-id is used to identify which test failed, so make sure that you pass the re
 
 If you do end up adding this action in a non-PR context then it is designed to just do nothing and continue without error. If you find that isn't true please open a bug report with reproduction instructions and we will fix the problem.
 
+### Permissions
+
+As this action needs to be able to comment back to your PR it might be necessary to add an explicit permission to the job: 
+
+```
+permissions:
+  pull-requests: write
+```
+
 ## Inputs
 
 ### `repo-token`
