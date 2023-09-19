@@ -1,34 +1,40 @@
-import { getInput, setFailed } from '@actions/core';
-import { getOctokit, context } from '@actions/github';
+import { getInput, setFailed } from "@actions/core";
+import { getOctokit, context } from "@actions/github";
 
-import getPullRequest from './lib/get-pull-request.js';
+import getPullRequest from "./lib/get-pull-request.js";
 
-import { signiture } from './lib/constants.js';
+import { signiture } from "./lib/constants.js";
 
-if(context.eventName !== 'pull_request') {
-  console.log(`continue-on-error-comment is designed to be used with pull request and does not work with a [${context.eventName}] event. We are ignoring this event.`);
+if (context.eventName !== "pull_request") {
+  console.log(
+    `continue-on-error-comment is designed to be used with pull request and does not work with a [${context.eventName}] event. We are ignoring this event.`
+  );
 } else {
   try {
-    const myToken = getInput('repo-token', { required: true });
-    const outcome = getInput('outcome', { required: true });
-    const testId = getInput('test-id', { required: true });
-    const botUser = getInput('bot-user', { required: true });
+    const myToken = getInput("repo-token", { required: true });
+    const outcome = getInput("outcome", { required: true });
+    const testId = getInput("test-id", { required: true });
+    const botUser = getInput("bot-user", { required: true });
 
-    if (outcome === 'failure') {
+    if (outcome === "failure") {
       const octokit = getOctokit(myToken);
       const pullRequest = await getPullRequest(context, octokit);
-    
+
       const { data: comments } = await octokit.rest.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: pullRequest.number,
       });
 
-      const existingComment = comments.find((comment) => comment.user.login === botUser && comment.body.endsWith(signiture) && comment.body.includes(`sha: ${context.sha}`));
-    
-      if (existingComment) {
+      const existingComment = comments.find(
+        (comment) =>
+          comment.user.login === botUser &&
+          comment.body.endsWith(signiture) &&
+          comment.body.includes(`sha: ${context.sha}`)
+      );
 
-        let body = existingComment.body.split('\n');
+      if (existingComment) {
+        let body = existingComment.body.split("\n");
 
         body.splice(body.length - 3, 0, `- ${testId}`);
 
@@ -36,10 +42,10 @@ if(context.eventName !== 'pull_request') {
           owner: context.repo.owner,
           repo: context.repo.repo,
           comment_id: existingComment.id,
-          body: body.join('\n'),
+          body: body.join("\n"),
         });
       } else {
-        const body = `Some tests with 'continue-on-error: true' have failed: 
+        const body = `Passing failures: 
     
   - ${testId}
 
@@ -53,7 +59,6 @@ if(context.eventName !== 'pull_request') {
         });
       }
     }
-
   } catch (error) {
     setFailed(error.message);
   }

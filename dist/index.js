@@ -9586,30 +9586,36 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 
 
 
-if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_request') {
-  console.log(`continue-on-error-comment is designed to be used with pull request and does not work with a [${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName}] event. We are ignoring this event.`);
+if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== "pull_request") {
+  console.log(
+    `continue-on-error-comment is designed to be used with pull request and does not work with a [${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName}] event. We are ignoring this event.`
+  );
 } else {
   try {
-    const myToken = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('repo-token', { required: true });
-    const outcome = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('outcome', { required: true });
-    const testId = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('test-id', { required: true });
-    const botUser = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('bot-user', { required: true });
+    const myToken = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("repo-token", { required: true });
+    const outcome = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("outcome", { required: true });
+    const testId = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("test-id", { required: true });
+    const botUser = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("bot-user", { required: true });
 
-    if (outcome === 'failure') {
+    if (outcome === "failure") {
       const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)(myToken);
       const pullRequest = await (0,_lib_get_pull_request_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z)(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, octokit);
-    
+
       const { data: comments } = await octokit.rest.issues.listComments({
         owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
         repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
         issue_number: pullRequest.number,
       });
 
-      const existingComment = comments.find((comment) => comment.user.login === botUser && comment.body.endsWith(_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o) && comment.body.includes(`sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}`));
-    
-      if (existingComment) {
+      const existingComment = comments.find(
+        (comment) =>
+          comment.user.login === botUser &&
+          comment.body.endsWith(_lib_constants_js__WEBPACK_IMPORTED_MODULE_3__/* .signiture */ .o) &&
+          comment.body.includes(`sha: ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.sha}`)
+      );
 
-        let body = existingComment.body.split('\n');
+      if (existingComment) {
+        let body = existingComment.body.split("\n");
 
         body.splice(body.length - 3, 0, `- ${testId}`);
 
@@ -9617,10 +9623,10 @@ if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_requ
           owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
           repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
           comment_id: existingComment.id,
-          body: body.join('\n'),
+          body: body.join("\n"),
         });
       } else {
-        const body = `Some tests with 'continue-on-error: true' have failed: 
+        const body = `Passing failures: 
     
   - ${testId}
 
@@ -9634,11 +9640,11 @@ if(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName !== 'pull_requ
         });
       }
     }
-
   } catch (error) {
     (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
   }
 }
+
 __webpack_handle_async_dependencies__();
 }, 1);
 
@@ -9650,7 +9656,8 @@ __webpack_handle_async_dependencies__();
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "o": () => (/* binding */ signiture)
 /* harmony export */ });
-const signiture = '_Created by [continue-on-error-comment](https://github.com/mainmatter/continue-on-error-comment/)_';
+const signiture = "😱";
+
 
 /***/ }),
 

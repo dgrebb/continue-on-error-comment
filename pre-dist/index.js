@@ -9577,7 +9577,8 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("zlib");
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "o": () => (/* binding */ signiture)
 /* harmony export */ });
-const signiture = '_Created by [continue-on-error-comment](https://github.com/mainmatter/continue-on-error-comment/)_';
+const signiture = "😱";
+
 
 /***/ }),
 
